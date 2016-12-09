@@ -5,7 +5,7 @@
 ** Login   <sanche_c@etna-alternance.net>
 ** 
 ** Started on  Wed Dec  7 14:29:45 2016 Carlos Jose Sanchez
-** Last update Wed Dec  7 22:17:58 2016 Carlos Jose Sanchez
+** Last update Fri Dec  9 02:52:06 2016 Carlos Jose Sanchez
 */
 
 #include <stdio.h>
@@ -46,6 +46,53 @@ int add_creature_to_team(t_personage *personage, t_creature *creature)
     }
   ++personage->team->quantity;
   my_putstr_color("green", "La creature a ete ajoute a votre equipe \n");
+  return (0);
+}
+
+t_creature *show_creature(t_personage *personage)
+{
+  t_creature *beast;
+  
+  my_putstr("\n");
+  beast = getCreature();
+  my_putstr_color("red", beast->name);
+  my_putstr_color("red", " apparu! \n");
+  personage->mode = my_strdup("Ib");
+  return (beast);
+}
+
+int magic_box_use(t_personage *personage, t_creature *beast)
+{
+  int random;
+  
+  my_putstr_color("yellow", "Vous utilisez une magic box...\n");
+  random = (rand() % 100) + 1;
+  if (random <= 30)
+    {
+      beast->pv *= 2;
+      beast->pm *= 2;
+      beast->pvmax *= 2;
+      beast->pmmax *= 2;
+      add_creature_to_team(personage, beast);
+      my_putstr_color("green", personage->name);
+      my_putstr_color("green", " Vous avez reussi a capturer ");
+      my_putstr_color("red", beast->name);
+      my_putstr("\n\n\n");
+      creature_description(beast);
+      personage->mode = my_strdup("Oob");
+    }else
+    {
+      my_putstr_color("red", beast->name);
+      my_putstr_color("red", " a reussi a sortir de la magic box!\n");
+      my_putstr_color("red", beast->name);
+      my_putstr_color("red", " sauvage vous a attaque! \n");
+      if (my_strcmp(personage->mode, "start") == 0)
+	{
+	  my_putstr_color("red", "et vous etes effraye\n");
+	  my_putstr_color("yellow", "Vous fuyez!\n");
+	} else if (my_strcmp(personage->mode, "Ib") == 0)
+	beast = beast_attack(personage, beast);
+    }
   return (0);
 }
 /*

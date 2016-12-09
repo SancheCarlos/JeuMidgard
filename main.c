@@ -5,7 +5,7 @@
 ** Login   <sanche_c@etna-alternance.net>
 ** 
 ** Started on  Mon Dec  5 15:44:30 2016 Carlos Jose Sanchez
-** Last update Wed Dec  7 22:58:17 2016 Carlos Jose Sanchez
+** Last update Thu Dec  8 23:30:33 2016 Carlos Jose Sanchez
 */
 
 #include <stdio.h>
@@ -33,16 +33,17 @@ int main(int argc,char **argv) {
       personage->name = my_strdup(*(argv + 2));
       personage->pv = 50;
       arret = create_team(personage);
-      beast = getCreature();
-      my_putstr_color("red", beast->name);
-      my_putstr_color("red", " apparu! \n");
+      personage->mode = my_strdup("Start");
       while (arret != 1)
     {
-      if (arret == 5){
-	beast = getCreature();
-	my_putstr_color("red", beast->name);
-	my_putstr_color("red", " apparu! \n");
-      }
+      if ((my_strcmp(personage->mode, "Start") == 0) && (arret != 3))
+	{
+	  beast = getCreature();
+	  my_putstr_color("red", beast->name);
+	  my_putstr_color("red", " apparu! \n");
+	}
+      my_putstr(beast->name);
+      my_putstr(personage->mode);
       my_putstr_color("magenta", "\norders~>");
       orders = readline();
       arret = functions_jeu(arret, orders, beast, personage);
